@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuiz ASK Tingkatan 2: Penukaran Asas 2 kepada Asas 8</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti JS -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Fredoka', 'Comic Neue', cursive, sans-serif;
+            background: linear-gradient(-45deg, #FF9A9E, #FECFEF, #A1C4FD, #C2E9FB);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes floatMascot {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .animate-pop {
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .btn-3d {
+            transition: all 0.15s ease;
+            box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.15);
+        }
+        .btn-3d:active {
+            transform: translateY(4px);
+            box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.15);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border: 4px solid rgba(255, 255, 255, 0.9);
+        }
+
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FF8E8E;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-3 sm:p-5 relative">
+
+    <!-- Latar Belakang Zarah & Gelembung Animasi -->
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="w-full max-w-2xl z-10 my-4">
+
+        <!-- ========================================== -->
+        <!-- HALAMAN 1: BANNER, LOGO & PENDAFTARAN     -->
+        <!-- ========================================== -->
+        <div id="page1" class="glass-card rounded-3xl p-4 sm:p-6 shadow-2xl relative text-center">
+            
+            <!-- HEADER CONTAINER: LOGO + BANNER IMAGE (FIT SEPENUHNYA) -->
+            <div class="bg-gradient-to-r from-amber-100 via-pink-100 to-purple-100 rounded-2xl p-2.5 sm:p-4 mb-5 shadow-inner border-2 border-pink-200 flex flex-col items-center gap-3">
+                
+                <!-- Bar Atas: Logo Cikgu Wi -->
+                <div class="flex items-center justify-center gap-3 w-full border-b border-pink-200/80 pb-2">
+                    <img id="main-logo" src="logo.png" onerror="this.onerror=null; this.src='https://placehold.co/120x120/FFB6C1/FFFFFF?text=Cikgu+Wi';" 
+                         alt="Logo Cikgu Wi" class="w-14 h-14 sm:w-16 sm:h-16 object-contain rounded-full shadow-md border-2 border-white bg-white">
+                    <div class="text-left">
+                        <span class="text-xs font-black text-pink-500 uppercase tracking-wider block">Portal Pembelajaran ASK</span>
+                        <h2 class="text-lg sm:text-xl font-extrabold text-gray-800 leading-tight">Cikgu Wi Interactive Quiz</h2>
+                    </div>
+                </div>
+
+                <!-- Banner Utama: ASKWI.png (Dipaparkan Penuh 100% Tanpa Terpotong) -->
+                <div class="w-full rounded-xl overflow-hidden shadow-md bg-white border border-pink-300">
+                    <img id="main-banner" src="ASKWI.png" onerror="this.onerror=null; this.src='https://placehold.co/800x450/FF69B4/FFFFFF?text=ASK+bersama+Cikgu+Wi';" 
+                         alt="Banner ASK Bersama Cikgu Wi" class="w-full h-auto object-contain block max-h-[350px]">
+                </div>
+            </div>
+
+            <div class="mb-5">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-pink-600 drop-shadow-sm leading-tight">
+                    KUIZ ASAS 2 KEPADA ASAS 8
+                </h1>
+                <p class="text-xs sm:text-sm font-bold text-gray-600 mt-1">
+                    Asas Sains Komputer Tingkatan 2 
+                </p>
+            </div>
+
+            <!-- BORANG PENGGUNA -->
+            <div class="space-y-4 text-left mb-6 bg-pink-50/80 p-4 sm:p-5 rounded-2xl border-2 border-pink-200 shadow-sm">
+                
+                <div>
+                    <label class="block text-gray-700 font-bold text-sm mb-1" for="studentName">
+                        <i class="fa-solid fa-user-astronaut text-pink-500 mr-1"></i> Nama Murid:
+                    </label>
+                    <input type="text" id="studentName" placeholder="Masukkan nama penuh anda..." 
+                        class="w-full px-4 py-2.5 rounded-xl border-2 border-pink-300 focus:border-pink-500 focus:outline-none font-semibold text-gray-800 transition shadow-sm">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-bold text-sm mb-1" for="studentClass">
+                        <i class="fa-solid fa-school text-pink-500 mr-1"></i> Kelas:
+                    </label>
+                    <input type="text" id="studentClass" placeholder="Contoh: 2 Bestari / 2 Cerdas" 
+                        class="w-full px-4 py-2.5 rounded-xl border-2 border-pink-300 focus:border-pink-500 focus:outline-none font-semibold text-gray-800 transition shadow-sm">
+                </div>
+
+                <!-- TETAPAN GOOGLE SHEETS SCRIPT (DAPATKAN TERUS DARI URL ANDA) -->
+                <div class="pt-2 border-t border-pink-200">
+                    <button type="button" onclick="toggleCustomSettings()" class="text-xs text-pink-700 font-bold hover:underline flex items-center gap-1">
+                        <i class="fa-solid fa-gear"></i> Tetapan Web App URL Google Sheets
+                    </button>
+                    
+                    <div id="customSettingsContainer" class="hidden mt-2 p-3 bg-white rounded-xl border border-pink-200 space-y-2">
+                        <label class="block text-xs font-bold text-gray-700 mb-1"><i class="fa-solid fa-link text-indigo-500"></i> Google Apps Script Web App URL:</label>
+                        <input type="text" id="scriptUrl" 
+                            value="https://script.google.com/macros/s/AKfycbwp59TPKu0EBx9l9-PXd-RiPM1Rit0jyrUR2HgLjep40pxjmq8_rGlMpp5sjGSvPuH6/exec" 
+                            onchange="saveScriptUrlLocally()"
+                            class="w-full px-3 py-1.5 text-xs rounded-lg border border-pink-300 focus:outline-none text-gray-700">
+                        <span class="text-[10px] text-gray-500 block">*URL telah dikemaskini mengikut pautan AppScript anda.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BUTANG MULA -->
+            <button onclick="startQuiz()" class="btn-3d w-full bg-gradient-to-r from-pink-500 via-rose-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-extrabold text-xl py-3.5 sm:py-4 rounded-2xl cursor-pointer tracking-wider flex items-center justify-center gap-3">
+                <i class="fa-solid fa-play"></i> MULA KUIZ SEKARANG
+            </button>
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- HALAMAN 2: SOALAN KUIZ (TANPA BANNER)      -->
+        <!-- ========================================== -->
+        <div id="page2" class="glass-card rounded-3xl p-4 sm:p-7 shadow-2xl hidden">
+            
+            <!-- Header Ringkas Soalan -->
+            <div class="flex items-center justify-between mb-3 pb-3 border-b-2 border-gray-100">
+                <div class="flex items-center gap-2">
+                    <span class="bg-pink-600 text-white font-bold text-xs sm:text-sm px-3 py-1.5 rounded-xl shadow" id="q-counter">
+                        Soalan 1 / 15
+                    </span>
+                    <span class="text-xs font-semibold text-gray-600 hidden sm:inline" id="student-badge"></span>
+                </div>
+                
+                <div class="bg-amber-100 border border-amber-300 text-amber-800 font-extrabold text-sm sm:text-base px-3 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5">
+                    <i class="fa-solid fa-star text-amber-500"></i>
+                    <span id="score-display">Markah: 0</span>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-200 h-3 rounded-full mb-5 overflow-hidden p-0.5">
+                <div id="progress-bar" class="bg-gradient-to-r from-pink-400 to-purple-500 h-full rounded-full transition-all duration-300" style="width: 6.66%;"></div>
+            </div>
+
+            <!-- Kotak Soalan -->
+            <div class="bg-gradient-to-br from-amber-50 to-pink-50 border-3 border-dashed border-pink-300 p-5 sm:p-6 rounded-2xl text-center mb-5 shadow-sm">
+                <span class="text-xs font-bold text-pink-600 uppercase tracking-widest block mb-1">Tukarkan Nombor Perduaan Kepada Perlapanan:</span>
+                <h3 class="text-3xl sm:text-4xl font-extrabold text-gray-800 tracking-wide" id="question-text">
+                    Loading...
+                </h3>
+            </div>
+
+            <!-- Pilihan Jawapan Berwarna-warni -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-2">
+                <!-- A: Merah -->
+                <button onclick="checkAnswer(0)" id="btn0" class="btn-3d bg-rose-500 hover:bg-rose-600 text-white text-lg font-bold p-3.5 sm:p-4 rounded-2xl text-left flex items-center gap-3 transition">
+                    <span class="w-8 h-8 rounded-lg bg-white/25 flex items-center justify-center font-extrabold text-white text-base">A</span>
+                    <span id="opt0-text">Option A</span>
+                </button>
+
+                <!-- B: Ungu -->
+                <button onclick="checkAnswer(1)" id="btn1" class="btn-3d bg-purple-600 hover:bg-purple-700 text-white text-lg font-bold p-3.5 sm:p-4 rounded-2xl text-left flex items-center gap-3 transition">
+                    <span class="w-8 h-8 rounded-lg bg-white/25 flex items-center justify-center font-extrabold text-white text-base">B</span>
+                    <span id="opt1-text">Option B</span>
+                </button>
+
+                <!-- C: Hijau -->
+                <button onclick="checkAnswer(2)" id="btn2" class="btn-3d bg-emerald-500 hover:bg-emerald-600 text-white text-lg font-bold p-3.5 sm:p-4 rounded-2xl text-left flex items-center gap-3 transition">
+                    <span class="w-8 h-8 rounded-lg bg-white/25 flex items-center justify-center font-extrabold text-white text-base">C</span>
+                    <span id="opt2-text">Option C</span>
+                </button>
+
+                <!-- D: Jingga -->
+                <button onclick="checkAnswer(3)" id="btn3" class="btn-3d bg-amber-500 hover:bg-amber-600 text-white text-lg font-bold p-3.5 sm:p-4 rounded-2xl text-left flex items-center gap-3 transition">
+                    <span class="w-8 h-8 rounded-lg bg-white/25 flex items-center justify-center font-extrabold text-white text-base">D</span>
+                    <span id="opt3-text">Option D</span>
+                </button>
+            </div>
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- POP-UP MODAL JALAN KERJA APABILA SALAH     -->
+        <!-- ========================================== -->
+        <div id="working-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+            <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl animate-pop border-4 border-rose-300 relative text-left max-h-[90vh] overflow-y-auto">
+                
+                <!-- Header Modal -->
+                <div class="flex items-center justify-between border-b pb-3 mb-4">
+                    <div class="flex items-center gap-2 text-rose-600">
+                        <i class="fa-solid fa-circle-xmark text-2xl"></i>
+                        <h3 class="text-xl font-extrabold">Aduhh, Jawapan Kurang Tepat!</h3>
+                    </div>
+                </div>
+
+                <!-- Penerangan Penjelasan Jalan Kerja -->
+                <div class="space-y-3 text-gray-700 text-sm">
+                    <p class="font-bold text-gray-800">Mari pelajari jalan kerja penyelesaian di bawah:</p>
+                    
+                    <div class="bg-rose-50 border border-rose-200 rounded-xl p-3">
+                        <span class="text-xs font-bold text-rose-500 uppercase block">Soalan asal:</span>
+                        <span class="text-xl font-extrabold text-gray-800" id="modal-question">101₂</span>
+                    </div>
+
+                    <!-- Kotak Visual Langkah Kerja 4-2-1 -->
+                    <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-3 space-y-2">
+                        <span class="text-xs font-bold text-indigo-700 uppercase block">Langkah 1: Kumpulkan 3 digit dari kanan ke kiri & letak nilai pemberat (4, 2, 1)</span>
+                        
+                        <div id="modal-steps-container" class="space-y-2">
+                            <!-- Kandungan dinamik jalan kerja akan dipaparkan di sini -->
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3">
+                        <span class="text-xs font-bold text-emerald-600 uppercase block">Jawapan Sebenar (Asas 8):</span>
+                        <span class="text-2xl font-extrabold text-emerald-700" id="modal-correct-ans">5₈</span>
+                    </div>
+                </div>
+
+                <!-- Butang Teruskan -->
+                <button onclick="closeModalAndContinue()" class="btn-3d w-full mt-5 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-extrabold text-lg py-3 rounded-2xl cursor-pointer flex items-center justify-center gap-2">
+                    Faham! Teruskan Soalan <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- HALAMAN 3: KEPUTUSAN + GOOGLE SHEETS       -->
+        <!-- ========================================== -->
+        <div id="page3" class="glass-card rounded-3xl p-6 sm:p-8 shadow-2xl text-center hidden">
+            
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-1">TAHNIAH & SYABAS!</h2>
+            <p id="result-student-info" class="text-pink-600 font-bold text-base sm:text-lg mb-4"></p>
+
+            <!-- Display Markah -->
+            <div class="bg-gradient-to-r from-pink-100 via-purple-100 to-indigo-100 border-2 border-pink-300 rounded-2xl p-5 mb-5 shadow-inner inline-block w-full max-w-sm">
+                <span class="text-xs font-bold text-pink-700 uppercase tracking-wider block mb-1">MARKAH KESELURUHAN</span>
+                <div class="text-4xl sm:text-5xl font-extrabold text-pink-600 my-1" id="final-score-text">0 / 15</div>
+                <div class="text-sm sm:text-base font-bold text-purple-700 mt-2" id="percentage-text">0%</div>
+            </div>
+
+            <!-- Status Penghantaran Google Sheets -->
+            <div id="sheets-status-box" class="bg-blue-50 border border-blue-200 rounded-xl p-3 mb-5 text-xs sm:text-sm text-blue-800 font-semibold flex items-center justify-center gap-2">
+                <i class="fa-solid fa-circle-notch fa-spin text-blue-600" id="status-icon"></i>
+                <span id="status-text">Menghantar markah ke Google Sheets...</span>
+            </div>
+
+            <!-- Butang Main Semula -->
+            <button onclick="resetQuiz()" class="btn-3d bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-lg px-8 py-3 rounded-2xl cursor-pointer inline-flex items-center gap-2">
+                <i class="fa-solid fa-rotate-right"></i> CUBA LAGI
+            </button>
+        </div>
+
+    </div>
+
+    <!-- LOGIK JAVASCRIPT -->
+    <script>
+        // ==========================================
+        // 1. ZARAH LATAR BELAKANG ANIMASI
+        // ==========================================
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 80;
+                this.radius = Math.random() * 10 + 4;
+                this.speed = Math.random() * 1.2 + 0.4;
+                this.alpha = Math.random() * 0.5 + 0.3;
+                const colors = ['#FF9A9E', '#A1C4FD', '#FFE66D', '#C2E9FB', '#B5EAD7', '#FFB7B2'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+                this.y -= this.speed;
+                this.x += Math.sin(this.y * 0.02) * 0.5;
+                if (this.y < -20) this.reset();
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 28; i++) particles.push(new Particle());
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+
+        // ==========================================
+        // 2. KESAN BUNYI AUDIO (WEB AUDIO API)
+        // ==========================================
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Bunyi Betul: Tepuk Tangan / Major Chord Arpeggio
+        function playCorrectSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const notes = [523.25, 659.25, 783.99, 1046.50];
+            notes.forEach((freq, index) => {
+                setTimeout(() => {
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                }, index * 70);
+            });
+        }
+
+        // Bunyi Salah: "Oh No" Drop Sound
+        function playWrongSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(240, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.45); 
+            gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.45);
+        }
+
+
+        // ==========================================
+        // 3. SOALAN KUIZ (15 SOALAN ASAS 2 KE ASAS 8)
+        // ==========================================
+        const questions = [
+            { q: "101₂", options: ["3₈", "5₈", "6₈", "7₈"], correct: 1, rawBinary: "101" },
+            { q: "110₂", options: ["4₈", "5₈", "6₈", "2₈"], correct: 2, rawBinary: "110" },
+            { q: "111₂", options: ["7₈", "8₈", "10₈", "6₈"], correct: 0, rawBinary: "111" },
+            { q: "1001₂", options: ["9₈", "11₈", "10₈", "12₈"], correct: 1, rawBinary: "1001" },
+            { q: "1010₂", options: ["10₈", "12₈", "14₈", "20₈"], correct: 1, rawBinary: "1010" },
+            { q: "1100₂", options: ["14₈", "12₈", "16₈", "30₈"], correct: 0, rawBinary: "1100" },
+            { q: "1101₂", options: ["13₈", "15₈", "17₈", "21₈"], correct: 1, rawBinary: "1101" },
+            { q: "1111₂", options: ["15₈", "16₈", "17₈", "20₈"], correct: 2, rawBinary: "1111" },
+            { q: "10001₂", options: ["21₈", "17₈", "25₈", "31₈"], correct: 0, rawBinary: "10001" },
+            { q: "10110₂", options: ["22₈", "26₈", "32₈", "16₈"], correct: 1, rawBinary: "10110" },
+            { q: "11001₂", options: ["25₈", "31₈", "33₈", "23₈"], correct: 1, rawBinary: "11001" },
+            { q: "11100₂", options: ["34₈", "28₈", "36₈", "44₈"], correct: 0, rawBinary: "11100" },
+            { q: "101010₂", options: ["52₈", "42₈", "62₈", "50₈"], correct: 0, rawBinary: "101010" },
+            { q: "110111₂", options: ["67₈", "57₈", "77₈", "65₈"], correct: 0, rawBinary: "110111" },
+            { q: "111111₂", options: ["66₈", "75₈", "77₈", "100₈"], correct: 2, rawBinary: "111111" }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+        let studentName = "";
+        let studentClass = "";
+
+        function toggleCustomSettings() {
+            document.getElementById("customSettingsContainer").classList.toggle("hidden");
+        }
+
+        function saveScriptUrlLocally() {
+            const url = document.getElementById("scriptUrl").value.trim();
+            try { localStorage.setItem("kuiz_ask_script_url", url); } catch(e){}
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            try {
+                const savedUrl = localStorage.getItem("kuiz_ask_script_url");
+                if (savedUrl) document.getElementById("scriptUrl").value = savedUrl;
+            } catch(e) {}
+        });
+
+
+        // ==========================================
+        // 4. ALIRAN PERMAINAN & KUIZ
+        // ==========================================
+        function startQuiz() {
+            studentName = document.getElementById("studentName").value.trim();
+            studentClass = document.getElementById("studentClass").value.trim();
+
+            if (!studentName || !studentClass) {
+                alert("Sila masukkan Nama dan Kelas anda terlebih dahulu!");
+                return;
+            }
+
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            document.getElementById("student-badge").innerText = `${studentName} (${studentClass})`;
+            document.getElementById("page1").classList.add("hidden");
+            document.getElementById("page2").classList.remove("hidden");
+
+            currentQ = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = questions[currentQ];
+            document.getElementById("q-counter").innerText = `Soalan ${currentQ + 1} / ${questions.length}`;
+            document.getElementById("score-display").innerText = `Markah: ${score}`;
+            document.getElementById("question-text").innerText = `${q.q} =  ?₈`;
+
+            const progressPercent = ((currentQ + 1) / questions.length) * 100;
+            document.getElementById("progress-bar").style.width = `${progressPercent}%`;
+
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`opt${i}-text`).innerText = q.options[i];
+            }
+        }
+
+        function checkAnswer(selectedIndex) {
+            const q = questions[currentQ];
+            
+            if (selectedIndex === q.correct) {
+                score++;
+                playCorrectSound();
+                nextQuestion();
+            } else {
+                playWrongSound();
+                showWorkingModal(q);
+            }
+        }
+
+        function nextQuestion() {
+            currentQ++;
+            if (currentQ < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        // ==========================================
+        // 5. JALAN KERJA PENUKARAN (Modal Apabila Salah)
+        // ==========================================
+        function showWorkingModal(q) {
+            document.getElementById("modal-question").innerText = q.q;
+            document.getElementById("modal-correct-ans").innerText = q.options[q.correct];
+
+            const rawBin = q.rawBinary;
+            // Pad 0 di hadapan supaya panjangnya gandaan 3
+            let paddedBin = rawBin;
+            while (paddedBin.length % 3 !== 0) {
+                paddedBin = "0" + paddedBin;
+            }
+
+            // Pecahkan kepada kumpulan 3 digit
+            let groups = [];
+            for (let i = 0; i < paddedBin.length; i += 3) {
+                groups.push(paddedBin.substring(i, i + 3));
+            }
+
+            let stepsHTML = "";
+            groups.forEach((grp, idx) => {
+                const b2 = parseInt(grp[0]);
+                const b1 = parseInt(grp[1]);
+                const b0 = parseInt(grp[2]);
+                const sum = (b2 * 4) + (b1 * 2) + (b0 * 1);
+
+                stepsHTML += `
+                    <div class="bg-white p-2.5 rounded-lg border border-indigo-100 text-xs sm:text-sm">
+                        <div class="font-bold text-indigo-900 mb-1">Kumpulan ${idx + 1}: <span class="bg-indigo-100 px-2 py-0.5 rounded font-mono text-indigo-700">${grp}</span></div>
+                        <div class="grid grid-cols-3 text-center bg-gray-50 p-1.5 rounded font-mono border">
+                            <div><span class="text-gray-400 text-[10px] block">4 ×</span> <b>${b2}</b> = ${b2 * 4}</div>
+                            <div><span class="text-gray-400 text-[10px] block">2 ×</span> <b>${b1}</b> = ${b1 * 2}</div>
+                            <div><span class="text-gray-400 text-[10px] block">1 ×</span> <b>${b0}</b> = ${b0 * 1}</div>
+                        </div>
+                        <div class="mt-1 text-right font-bold text-indigo-600">
+                            Jumlah = ${b2 * 4} + ${b1 * 2} + ${b0 * 1} = <span class="text-base text-pink-600 font-extrabold">${sum}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById("modal-steps-container").innerHTML = stepsHTML;
+            document.getElementById("working-modal").classList.remove("hidden");
+        }
+
+        function closeModalAndContinue() {
+            document.getElementById("working-modal").classList.add("hidden");
+            nextQuestion();
+        }
+
+        // ==========================================
+        // 6. KEPUTUSAN & POST GOOGLE SHEETS
+        // ==========================================
+        function showResults() {
+            document.getElementById("page2").classList.add("hidden");
+            document.getElementById("page3").classList.remove("hidden");
+
+            document.getElementById("result-student-info").innerText = `${studentName} | ${studentClass}`;
+            document.getElementById("final-score-text").innerText = `${score} / ${questions.length}`;
+            
+            const percentage = Math.round((score / questions.length) * 100);
+            document.getElementById("percentage-text").innerText = `Peratusan: ${percentage}%`;
+
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 110, spread: 80, origin: { y: 0.6 } });
+            }
+
+            sendToGoogleSheets(percentage);
+        }
+
+        function resetQuiz() {
+            document.getElementById("page3").classList.add("hidden");
+            document.getElementById("page1").classList.remove("hidden");
+        }
+
+        function sendToGoogleSheets(percentage) {
+            const scriptUrl = document.getElementById("scriptUrl").value.trim();
+            const statusBox = document.getElementById("sheets-status-box");
+            const statusIcon = document.getElementById("status-icon");
+            const statusText = document.getElementById("status-text");
+
+            if (!scriptUrl) {
+                statusBox.className = "bg-amber-50 border border-amber-200 rounded-xl p-3 mb-5 text-xs sm:text-sm text-amber-800 font-semibold flex items-center justify-center gap-2";
+                statusIcon.className = "fa-solid fa-triangle-exclamation text-amber-600";
+                statusText.innerText = "URL Google Sheets belum diset. Markah tidak dapat direkodkan secara dalam talian.";
+                return;
+            }
+
+            statusBox.className = "bg-blue-50 border border-blue-200 rounded-xl p-3 mb-5 text-xs sm:text-sm text-blue-800 font-semibold flex items-center justify-center gap-2";
+            statusIcon.className = "fa-solid fa-circle-notch fa-spin text-blue-600";
+            statusText.innerText = "Sedang hantar markah ke Google Sheets...";
+
+            const formData = new FormData();
+            formData.append("nama", studentName);
+            formData.append("kelas", studentClass);
+            formData.append("markah", `${score}/${questions.length}`);
+            formData.append("peratus", `${percentage}%`);
+            formData.append("tarikh", new Date().toLocaleString('ms-MY'));
+
+            fetch(scriptUrl, {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.text())
+            .then(data => {
+                statusBox.className = "bg-emerald-50 border border-emerald-200 rounded-xl p-3 mb-5 text-xs sm:text-sm text-emerald-800 font-semibold flex items-center justify-center gap-2";
+                statusIcon.className = "fa-solid fa-circle-check text-emerald-600";
+                statusText.innerText = "Markah berjaya direkodkan secara automatik dalam Google Sheets Guru!";
+            })
+            .catch(err => {
+                console.error(err);
+                statusBox.className = "bg-rose-50 border border-rose-200 rounded-xl p-3 mb-5 text-xs sm:text-sm text-rose-800 font-semibold flex items-center justify-center gap-2";
+                statusIcon.className = "fa-solid fa-circle-xmark text-rose-600";
+                statusText.innerText = "Gagal dihantar ke Google Sheets. Sila semak Web App URL.";
+            });
+        }
+    </script>
+</body>
+</html>
